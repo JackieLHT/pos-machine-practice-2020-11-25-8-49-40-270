@@ -7,12 +7,12 @@ public class PosMachine {
     public String printReceipt(List<String> barcodes) {
         List<ItemInfo>  itemInfos = ItemDataLoader.loadAllItemInfos();
 
-        List<ItemDetail> allItemDetails = getAllItemDeail(barcodes,itemInfos);
+        List<ItemDetail> allItemDetails = getAllItemDetails(barcodes,itemInfos);
 
         return renderReceipt(allItemDetails);
     }
 
-    public List<ItemDetail> getAllItemDeail(List<String> barcodes,List<ItemInfo>  itemInfos) {
+    public List<ItemDetail> getAllItemDetails(List<String> barcodes,List<ItemInfo>  itemInfos) {
         List<ItemDetail> allItemDetail = new ArrayList<>();
         for(ItemInfo item:itemInfos) {
             if(barcodes.contains((item.getBarcode())))

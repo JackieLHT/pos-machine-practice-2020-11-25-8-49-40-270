@@ -1,13 +1,13 @@
 package pos.machine;
 
-public class ItemDetail {
+public class ReceiptItem {
     private String barcode = "";
     private String name = "";
     private int price = 0;
     private long quantity = 0;
     private long subtotal = 0;
 
-    public ItemDetail(String barcode, String name, int price, long quantity) {
+    public ReceiptItem(String barcode, String name, int price, long quantity) {
         this.barcode = barcode;
         this.name = name;
         this.price = price;

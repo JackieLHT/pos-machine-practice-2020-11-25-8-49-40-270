@@ -7,39 +7,24 @@ public class PosMachine {
     public String printReceipt(List<String> barcodes) {
         List<ItemInfo>  itemInfos = ItemDataLoader.loadAllItemInfos();
 
-        List<ItemDetail> allItemDetails = getAllItemDetails(barcodes,itemInfos);
+        List<ReceiptItem> allReceiptItems = getAllItemDetails(barcodes,itemInfos);
 
-        return renderReceipt(allItemDetails);
+        Receipt receipt = new Receipt(allReceiptItems);
+
+        return receipt.renderReceipt();
     }
 
-    public List<ItemDetail> getAllItemDetails(List<String> barcodes,List<ItemInfo>  itemInfos) {
-        List<ItemDetail> allItemDetail = new ArrayList<>();
+    public List<ReceiptItem> getAllItemDetails(List<String> barcodes, List<ItemInfo>  itemInfos) {
+        List<ReceiptItem> allReceiptItem = new ArrayList<>();
         for(ItemInfo item:itemInfos) {
             if(barcodes.contains((item.getBarcode())))
             {
                 long quantity = barcodes.stream().filter(barcode -> barcode.equals(item.getBarcode())).count();
-                ItemDetail itemDetail = new ItemDetail(item.getBarcode(), item.getName(), item.getPrice(), quantity);
-                itemDetail.generateSubtotal();
-                allItemDetail.add(itemDetail);
+                ReceiptItem receiptItem = new ReceiptItem(item.getBarcode(), item.getName(), item.getPrice(), quantity);
+                receiptItem.generateSubtotal();
+                allReceiptItem.add(receiptItem);
             }
         }
-        return allItemDetail;
-    }
-
-    private int calculateTotal(List<ItemDetail> allItemDetails) {
-        int total = 0;
-        for(ItemDetail item:allItemDetails) {
-            total += item.getSubtotal();
-        }
-        return total;
-    }
-
-    private String renderReceipt(List<ItemDetail> allItemDetails) {
-        String receipt = "***<store earning no money>Receipt***\n";
-        for (ItemDetail item : allItemDetails) {
-            receipt += String.format("Name: %s, Quantity: %d, Unit price: %d (yuan), Subtotal: %d (yuan)\n", item.getName(), item.getQuantity(), item.getPrice(), item.getSubtotal());
-        }
-        receipt += String.format("----------------------\nTotal: %d (yuan)\n**********************", calculateTotal(allItemDetails));
-        return receipt;
+        return allReceiptItem;
     }
 }
